@@ -1,4 +1,5 @@
 
+#https://opensource.org/licenses/mit-license.php
 
 from Flv.flv import  *
 
@@ -28,7 +29,6 @@ flv_help.parse_tagN()
 #00 01 0a
 #print(a*16*16*16+b*16*16+c)
 #print()
-
 #xx=format("{0:2}",str(hex(c)))
 #print(xx)
 #print("0{0}" % str(hex(a)) + str(hex(b)) + str(hex(c)))
