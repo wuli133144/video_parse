@@ -82,7 +82,6 @@ class flv_parse(object):
                       i=i+1 #jump over type
                       t_size=int(binascii.b2a_hex(self.m_data[i:i+3]),16)
 
-
                      ####################################################################
 
                       i+=3
