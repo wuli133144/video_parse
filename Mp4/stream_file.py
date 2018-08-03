@@ -15,7 +15,7 @@ class stream_file(object):
     def init(self,filepath):
 
         try:
-            self.m_file_handle=open(filepath,'rb')
+            self.m_file_handle=open(filepath,'wb+')
             self.m_file_size=self.m_file_handle.seek(0,2)
             self.m_file_handle.seek(0, 0)
         except FileExistsError :
@@ -29,6 +29,14 @@ class stream_file(object):
         data= bytearray(self.m_file_handle.read(bys))
         self.cur_pos+=bys
         return data
+
+    def writebytes(self,dat):
+
+        self.m_file_handle.write(dat)
+        pass
+
+    def writeLines(self,dat):
+        self.m_file_handle.writelines(dat)
 
     def current_pos(self):
         return self.cur_pos
@@ -52,4 +60,7 @@ class stream_file(object):
 
     def skip(self,space):
         self.m_file_handle.seek(space, 1)
+
+    def __del__(self):
+        self.m_file_handle.close()
 

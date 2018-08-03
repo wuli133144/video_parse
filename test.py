@@ -11,6 +11,9 @@ flv_help=flv_parse("test.flv")
 flv_help.parse_header()
 flv_help.parse_tagN()
 
+
+print(flv_help.getsize())
+
 #
 # a=bytearray(b'\x00\x04\xd1')
 #

@@ -1,0 +1,13 @@
+
+
+from Flv2H264.flv2h264 import *
+
+
+
+
+tools=flv2h264("test.flv")
+
+print(" ##################h265 size###################### ")
+tools.flv2h264_def()
+
+print(" ##################h265 size end###################### ")

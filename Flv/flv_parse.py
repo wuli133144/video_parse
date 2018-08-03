@@ -34,7 +34,8 @@ class flv_parse(object):
         except  (FileExistsError) :
             print("flv file not found!")
 
-
+    def getsize(self):
+        return self.m_size
 
     def parse_header(self):
         header=None
@@ -64,12 +65,14 @@ class flv_parse(object):
         tag=-1
         i=FLV_HEADER_SIZE  #flv header size
 
-        while i <self.m_size:
 
+        while i <=self.m_size:
 
+             i += FLV_PRE_LEN
              self.cur=i
+             if i >=self.m_size:
+                 break
 
-             i+=FLV_PRE_LEN
 
              #print(i)
              try:
@@ -125,7 +128,7 @@ class flv_parse(object):
                       tg.data=t_data
                       self.m_flv.tagN.append(tg)
 
-                      print("<all script>tg.type:%d %d %d %d " % (tg.type ,tg.data_size,tg.timestam,tg.stream_id))
+                      print("<all script>tg.type:%d %d %d %d i=%d " % (tg.type ,tg.data_size,tg.timestam,tg.stream_id,i))
 
 
                  elif self.m_data[i] == FLV_FORMAT_AUDEO:
@@ -166,7 +169,9 @@ class flv_parse(object):
 
                     tg.data          = t_data
                     self.m_flv.tagN.append(tg)
-                    print("<all audio>tg.type:%d %d %d %d  %s" % (tg.type, tg.data_size, tg.timestam, tg.stream_id,tg.stream_type))
+                    self.m_flv.addaac(t_data)
+
+                    print("<all audio>tg.type:%d %d %d %d  %s i=%d" % (tg.type, tg.data_size, tg.timestam, tg.stream_id,tg.stream_type,i))
 
                  elif self.m_data[i] == FLV_FORMAT_VIDEO:
                     tag += 1
@@ -209,9 +214,11 @@ class flv_parse(object):
                     tg.data = t_data
                     tg.stream_type=get_video_type(stream_type)
                     self.m_flv.tagN.append(tg)
-                    print("<all audio>tg.type:%d %d %d %d  %s" % (tg.type, tg.data_size, tg.timestam, tg.stream_id,tg.stream_type))
 
+                    self.m_flv.addh264(t_data)
+                    print("<all audio>tg.type:%d %d %d %d  %s i=%d" % (tg.type, tg.data_size, tg.timestam, tg.stream_id,tg.stream_type,i))
 
+                 #i+=FLV_PRE_LEN
 
              except IndexError :
                  print("out range of array")
