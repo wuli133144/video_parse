@@ -18,6 +18,19 @@
  3. check output in terminal you'll get all information of file format
 
 ```
+
+## how to create h264 file
+
+<strong>
+open your terminal on windows or linux or macos,put command like :
+     <code>
+       ffmpeg -i xxx.mp4  -vcodec  copy  -an -f m4v  test.264
+     </code>
+
+</strong>
+
+
+
 ## continue
 
 > please support my development personal,if you have enough intreseting on it,please git clone it on yourself
