@@ -15,7 +15,7 @@ class stream_file(object):
     def init(self,filepath):
 
         try:
-            self.m_file_handle=open(filepath,'wb+')
+            self.m_file_handle=open(filepath,'rb+')
             self.m_file_size=self.m_file_handle.seek(0,2)
             self.m_file_handle.seek(0, 0)
         except FileExistsError :
