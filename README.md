@@ -27,6 +27,7 @@ open your terminal on windows or linux or macos,put command like :
        ffmpeg -i xxx.mp4  -vcodec  copy  -an -f m4v  test.264
      </code>
 
+then you'll get a .264 file,you can use it for experiment
 </strong>
 
 
