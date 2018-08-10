@@ -11,6 +11,15 @@ FLV_FORMAT_AUDEO  =8
 
 FLV_FORMAT_VIDEO  =9
 
+###########AMFTYPE#################################
+
+
+AMF_TYPE_STRING    =0x02
+
+
+AMF_TYPE_ARRAY     =0x08
+
+
 
 #############audio#############################
 
@@ -91,3 +100,16 @@ def get_video_type(type):
         return " generated keyframe （reserved for server use）"
     elif type == 5:
         return " video info/command frame"
+
+
+
+def  get_amf_type_len(type):
+    if isinstance(type, str) is False:
+        return None
+
+    if type =="Number":
+        return 8
+    elif type == "Boolean":
+        return 1
+
+

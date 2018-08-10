@@ -8,6 +8,7 @@ from Flv.flv import *
 from struct import  *
 from Flv.utils import *
 from Flv.tag import *
+from Flv.onMetaData import *
 import string
 
 import  binascii
@@ -117,18 +118,42 @@ class flv_parse(object):
                       # for j in range(i,i+t_size):
                       #      t_data+=str(self.m_data[j])
 
-                      t_data=str(self.m_data[i:i+t_size])
+                      t_data=self.m_data[i:i+t_size]
+                      metadata=OnMetaData()
+                      metadata.data_size=t_size
+                      metadata.stream_id=t_stream_id
+                      metadata.timestamp=t_tmstamp
 
-                      i+=t_size
-                      tg=flv_tag()
-                      tg.type=FLV_FORMAT_SCRIPT
-                      tg.data_size=t_size
-                      tg.timestam=t_tmstamp
-                      tg.stream_id=t_stream_id
-                      tg.data=t_data
-                      self.m_flv.tagN.append(tg)
+                      if self.m_data[i]==0x02:
+                          metadata.amf_string=AMF_string()
 
-                      print("<all script>tg.type:%d %d %d %d i=%d " % (tg.type ,tg.data_size,tg.timestam,tg.stream_id,i))
+                      i+=13
+
+                      if self.m_data[i]==0x08:
+                          metadata.amf_string = AMF_array()
+
+                      i+=1
+                      key_size=int(binascii.b2a_hex(self.m_data[i:i + 3]), 16)
+
+                      metadata.amf_array.set_amf_packet_array_count(key_size)
+                      i+=4
+
+                      cnt=0
+                      while cnt <key_size:
+                           str_len=int(binascii.b2a_hex(self.m_data[i:i + 1]), 16)
+                           i+=2
+                           key=str(self.m_data[i:i+str_len])
+                           i+=str_len
+                           element_type=self.m_data[i:i+3]
+                           element_len=get_amf_type_len(element_type)
+                           i+=3
+                           value=self.m_data[i:i+element_len]
+                           metadata.amf_array.set_amf_packet_array_map({key:value})
+                           cnt+=1
+
+                      self.m_flv.tagN.append(metadata)
+
+                      #print("<all script>tg.type:%d %d %d %d i=%d " % (tg.type ,tg.data_size,tg.timestam,tg.stream_id,i))
 
 
                  elif self.m_data[i] == FLV_FORMAT_AUDEO:
